@@ -1,28 +1,31 @@
+const user = require('../utils/userData')
 const testServer = require('../utils/testServer')
-const faker = require('faker')
+const rota = require('../utils/rotas')
 
-const rotaUsuarios = '/usuarios'
+var usuario
 var user_id
 
-const novoUsuarioSucesso = {
-    nome: faker.name.firstName() + ' ' + faker.name.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    administrador: `${faker.random.boolean()}`
-}
+beforeEach( async (done) => {
+  usuario = user.dadosDoUsuario()
 
-beforeAll( async (done) => {
-const response_user = await testServer.post(rotaUsuarios)
-      .send(novoUsuarioSucesso);
+  const response_user = await user.criarUsuario(usuario)
 
-user_id = await response_user.body._id
-done()
+  user_id = await response_user.body._id
+  done()
 })
 
-describe('Editar um usuário através da rota DELETE', () => {
-  it('Excluir um usuário com sucesso', async () => {
-    const response = await testServer.delete(rotaUsuarios + '/' + user_id)
+describe('Excluir um usuário através da rota DELETE com sucesso', () => {
+  it('Excluir um usuário com sucesso pelo id', async () => {
+    const response = await testServer.delete(rota.rotaUsuarios + '/' + user_id)
     expect(response.status).toBe(200)
     expect(response.body).toHaveProperty('message', 'Registro excluído com sucesso')
+  })
+})
+
+describe('Excluir um usuário através da rota DELETE sem sucesso', () => {
+  it('Tentar excluir um usuário inexistente', async () => {
+    const response = await testServer.delete(rota.rotaUsuarios + '/' + 'essenaoexiste')
+    expect(response.status).toBe(200)
+    expect(response.body).toHaveProperty('message', 'Nenhum registro excluído')
   })
 })
