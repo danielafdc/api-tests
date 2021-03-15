@@ -1,8 +1,8 @@
 module.exports = {
 
-rotaUsuarios: '/usuarios',
+  rotaUsuarios: '/usuarios',
 
-rotaGetUsuarioPorId: '/usuarios?_id=',
+  rotaGetUsuarioPorId: '/usuarios?_id=',
 
-rotaGetUsuarioPorNome: '/usuarios?nome='
+  rotaGetUsuarioPorNome: '/usuarios?nome='
 }
