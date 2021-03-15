@@ -5,13 +5,12 @@ const rota = require('../utils/rotas')
 var usuario
 var user_id
 
-beforeEach( async (done) => {
+beforeEach( async () => {
   usuario = user.dadosDoUsuario()
 
   const response_user = await user.criarUsuario(usuario)
 
   user_id = await response_user.body._id
-  done()
 })
 
 describe('Excluir um usuário através da rota DELETE com sucesso', () => {
