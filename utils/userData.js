@@ -16,6 +16,6 @@ module.exports = {
         const response_user = await testServer.post(rota.rotaUsuarios)
             .send(usuario)
             
-        return response_user
+        return responseUser
     }
 }
