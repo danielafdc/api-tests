@@ -2,7 +2,7 @@ const user = require('../utils/userData')
 const testServer = require('../utils/testServer')
 const rota = require('../utils/rotas')
 
-var usuario
+let usuario
 
 beforeEach(() => {
   usuario = user.dadosDoUsuario()
