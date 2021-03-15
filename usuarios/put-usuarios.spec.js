@@ -28,7 +28,7 @@ describe('Editar um usuário através da rota PUT com sucesso', () => {
 
 describe('Editar um usuário através da rota PUT sem sucesso', () => {
   it('Editar o email do usuário usando um já existente deve falhar', async () => {
-    const response = await testServer.put(rota.rotaUsuarios + '/' + user_id)
+    const response = await testServer.put(rota.rotaUsuarios + '/' + userId)
       .send({'nome': usuario.nome,
             'email': 'fulano@qa.com',
             'password': usuario.password,
