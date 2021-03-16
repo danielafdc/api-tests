@@ -1,20 +1,45 @@
-const faker = require('faker')
+const user = require('../utils/userData')
 const testServer = require('../utils/testServer')
+const rota = require('../utils/rotas')
 
-const rotaUsuarios = '/usuarios'
+let usuario
 
-const novoUsuarioSucesso = {
-  nome: faker.name.firstName() + ' ' + faker.name.lastName(),
-  email: faker.internet.email(),
-  password: faker.internet.password(),
-  administrador: `${faker.random.boolean()}`
-}
+describe('POST /usuarios', () => {
+  beforeEach(() => {
+    usuario = user.dadosDoUsuario()
+  })
 
-describe('Criar um usuário através da rota POST', () => {
-  it('Cadastrar um novo usuário com sucesso', async () => {
-    const response = await testServer.post(rotaUsuarios)
-      .send(novoUsuarioSucesso)
-    expect(response.status).toBe(201)
-    expect(response.body).toHaveProperty('message', 'Cadastro realizado com sucesso')
+  describe('Criar usuário através da rota POST com sucesso', () => {
+    it('Cadastrar um novo usuário comum com sucesso', async () => {
+      const response = await testServer.post(rota.rotaUsuarios)
+        .send(usuario)
+      expect(response.status).toBe(201)
+      expect(response.body).toHaveProperty('message', 'Cadastro realizado com sucesso')
+    })
+
+    it('Cadastrar um novo usuário administrador com sucesso', async () => {
+      usuario.administrador = 'true'
+      const response = await testServer.post(rota.rotaUsuarios)
+        .send(usuario)
+      expect(response.status).toBe(201)
+    })
+  })
+
+  describe('Criar usuário através da rota POST sem sucesso', () => {
+    it('Tentar cadastrar um usuário com email já existente deve falhar', async () => {
+      usuario.email = 'fulano@qa.com'
+      const response = await testServer.post(rota.rotaUsuarios)
+        .send(usuario)
+      expect(response.status).toBe(400)
+      expect(response.body).toHaveProperty('message', 'Este email já está sendo usado')
+    })
+
+    it('Tentar cadastrar um usuário com o nome em branco deve falhar', async () => {
+      usuario.nome = ''
+      const response = await testServer.post(rota.rotaUsuarios)
+        .send(usuario)
+      expect(response.status).toBe(400)
+      expect(response.body).toMatchObject({ nome: 'nome não pode ficar em branco' })
+    })
   })
 })
