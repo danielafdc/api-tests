@@ -3,12 +3,21 @@ const testServer = require('../utils/testServer')
 const rota = require('../utils/rotas')
 
 module.exports = {
-  dadosDoUsuario: () => {
+  dadosDoUsuarioComum: () => {
     return {
       nome: faker.name.firstName() + ' ' + faker.name.lastName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
       administrador: 'false'
+    }
+  },
+
+  dadosDoUsuarioAdmin: () => {
+    return {
+      nome: faker.name.firstName() + ' ' + faker.name.lastName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      administrador: 'true'
     }
   },
 

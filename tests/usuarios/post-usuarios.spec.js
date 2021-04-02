@@ -1,4 +1,4 @@
-const user = require('../utils/userData')
+const user = require('../dataFactory/userData')
 const testServer = require('../utils/testServer')
 const rota = require('../utils/rotas')
 
@@ -6,7 +6,7 @@ let usuario
 
 describe('POST /usuarios', () => {
   beforeEach(() => {
-    usuario = user.dadosDoUsuario()
+    usuario = user.dadosDoUsuarioComum()
   })
 
   describe('Criar usuário através da rota POST com sucesso', () => {

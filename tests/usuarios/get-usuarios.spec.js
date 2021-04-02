@@ -5,7 +5,6 @@ describe('GET /usuarios', () => {
   describe('Encontrar um usuário através da rota GET com sucesso', () => {
     it('Encontrar um usuário pelo id com sucesso', async () => {
       const response = await testServer.get(rota.rotaGetUsuarioPorId + '0uxuPY0cbmQhpEz1')
-      //  .query({'usuarios[0]._id': '0uxuPY0cbmQhpEz1'});
       expect(response.status).toBe(200)
       expect(response.body.usuarios).toEqual(
         expect.arrayContaining([
