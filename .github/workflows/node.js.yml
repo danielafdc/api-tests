@@ -32,5 +32,9 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-    - name: API Tests
+    - uses: actions/checkout@v2
+    - name: API Tests ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     - run: npm run test
