@@ -1,4 +1,4 @@
-const user = require('../utils/userData')
+const user = require('../dataFactory/userData')
 const testServer = require('../utils/testServer')
 const rota = require('../utils/rotas')
 
@@ -7,7 +7,7 @@ let userId
 
 describe('DELETE /usuarios', () => {
   beforeEach(async () => {
-    usuario = user.dadosDoUsuario()
+    usuario = user.dadosDoUsuarioComum()
 
     const responseUser = await user.criarUsuario(usuario)
 
