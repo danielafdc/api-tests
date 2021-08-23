@@ -1,8 +1,8 @@
-const auth = require('../dataFactory/authData')
-const prod = require('../dataFactory/productData')
-const cart = require('../dataFactory/cartData')
-const testServer = require('../utils/testServer')
-const rota = require('../utils/rotas')
+const auth = require('../../dataFactory/authData')
+const prod = require('../../dataFactory/productData')
+const cart = require('../../dataFactory/cartData')
+const testServer = require('../../utils/testServer')
+const rota = require('../../utils/rotas')
 
 let authorization
 let produto
@@ -12,7 +12,7 @@ describe('DELETE /carrinhos/cancelar-compra', () => {
     authorization = await auth.login()
     produto = await prod.criarProduto(authorization)
     prodId = produto.body._id
-    const { body } = await cart.criarCarrinho(authorization, prodId)
+    await cart.criarCarrinho(authorization, prodId)
   })
   describe('Cancelar compra através da rota DELETE com sucesso', () => {
     it('Cancelar uma compra com sucesso', async () => {
@@ -45,5 +45,9 @@ describe('DELETE /carrinhos/cancelar-compra', () => {
       expect(response.status).toBe(401)
       expect(response.body).toHaveProperty('message', 'Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
     })
+  })
+
+  afterEach(() => {
+    prod.deletarProduto(prodId)
   })
 })

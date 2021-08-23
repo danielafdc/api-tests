@@ -1,16 +1,17 @@
-const auth = require('../dataFactory/authData')
-const prod = require('../dataFactory/productData')
-const cart = require('../dataFactory/cartData')
-const testServer = require('../utils/testServer')
-const rota = require('../utils/rotas')
+const auth = require('../../dataFactory/authData')
+const prod = require('../../dataFactory/productData')
+const cart = require('../../dataFactory/cartData')
+const testServer = require('../../utils/testServer')
+const rota = require('../../utils/rotas')
 
 let cartId
+let prodId
 
 describe('GET /carrinhos', () => {
   beforeEach(async () => {
     const authorization = await auth.login()
     const produto = await prod.criarProduto(authorization)
-    const prodId = produto.body._id
+    prodId = produto.body._id
     const { body } = await cart.criarCarrinho(authorization, prodId)
     cartId = body._id
   })
@@ -40,5 +41,9 @@ describe('GET /carrinhos', () => {
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'Carrinho não encontrado')
     })
+  })
+
+  afterEach(() => {
+    prod.deletarProduto(prodId)
   })
 })

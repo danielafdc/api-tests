@@ -16,5 +16,9 @@ module.exports = {
     const dadosProduto = module.exports.dadosDoProduto()
     const produto = await testServer.post(rota.rotaProdutos).send(dadosProduto).set('Authorization', authorization)
     return produto
+  },
+
+  deletarProduto: async (idProduto) => {
+    await testServer.delete(rota.rotaProdutos + '/' + idProduto)
   }
 }

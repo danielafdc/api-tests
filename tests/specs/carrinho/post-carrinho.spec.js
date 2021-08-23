@@ -1,8 +1,8 @@
-const auth = require('../dataFactory/authData')
-const prod = require('../dataFactory/productData')
-const cart = require('../dataFactory/cartData')
-const testServer = require('../utils/testServer')
-const rota = require('../utils/rotas')
+const auth = require('../../dataFactory/authData')
+const prod = require('../../dataFactory/productData')
+const cart = require('../../dataFactory/cartData')
+const testServer = require('../../utils/testServer')
+const rota = require('../../utils/rotas')
 
 let prodId
 let authorization
@@ -42,7 +42,7 @@ describe('POST /carrinhos', () => {
     })
 
     it('Criar dois carrinhos para o mesmo usuário deve falhar', async () => {
-      const response1 = await cart.criarCarrinho(authorization, prodId)
+      await cart.criarCarrinho(authorization, prodId)
       const response2 = await cart.criarCarrinho(authorization, prodId)
       expect(response2.status).toBe(400)
       expect(response2.body).toHaveProperty('message', 'Não é permitido ter mais de 1 carrinho')
@@ -58,7 +58,7 @@ describe('POST /carrinhos', () => {
       const response = await testServer.post(rota.rotaCarrinhos).send({
         produtos: [{
           idProduto: prodId,
-          quantidade: 1000
+          quantidade: 100000
         }]
       }).set('Authorization', authorization)
       expect(response.status).toBe(400)
@@ -71,4 +71,8 @@ describe('POST /carrinhos', () => {
       expect(response.body).toHaveProperty('message', 'Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
     })
   })
+
+    afterEach(() => {
+      prod.deletarProduto(prodId)
+    })
 })

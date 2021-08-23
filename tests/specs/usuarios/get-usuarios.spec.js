@@ -1,5 +1,5 @@
-const testServer = require('../utils/testServer')
-const rota = require('../utils/rotas')
+const testServer = require('../../utils/testServer')
+const rota = require('../../utils/rotas')
 
 describe('GET /usuarios', () => {
   describe('Encontrar um usuário através da rota GET com sucesso', () => {

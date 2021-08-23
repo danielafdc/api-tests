@@ -1,6 +1,6 @@
-const user = require('../dataFactory/userData')
-const testServer = require('../utils/testServer')
-const rota = require('../utils/rotas')
+const user = require('../../dataFactory/userData')
+const testServer = require('../../utils/testServer')
+const rota = require('../../utils/rotas')
 
 let usuario
 let userId

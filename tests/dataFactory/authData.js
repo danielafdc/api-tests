@@ -6,7 +6,7 @@ module.exports = {
   login: async () => {
     const usuario = user.dadosDoUsuarioAdmin()
     await user.criarUsuario(usuario)
-    dadosLogin = {
+    const dadosLogin = {
       email: usuario.email,
       password: usuario.password
     }
