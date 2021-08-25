@@ -17,17 +17,21 @@ describe('DELETE /carrinhos/cancelar-compra', () => {
   describe('Cancelar compra através da rota DELETE com sucesso', () => {
     it('Cancelar uma compra com sucesso', async () => {
       const response = await testServer.delete(rota.rotaCancelarCompra).set('Authorization', authorization)
+      console.log(response.body)
       expect(response.status).toBe(200)
       expect(response.body).toHaveProperty('message', 'Registro excluído com sucesso. Estoque dos produtos reabastecido')
     })
 
     it('Cancelar uma compra com sucesso deve devolver o produto para o estoque', async () => {
       const responseGet = await testServer.get(rota.rotaProdutos + '/' + prodId)
+      console.log(responseGet.body)
       const qtd = responseGet.body.quantidade
       const response = await testServer.delete(rota.rotaCancelarCompra).set('Authorization', authorization)
+      console.log(response.body)
       expect(response.status).toBe(200)
       expect(response.body).toHaveProperty('message', 'Registro excluído com sucesso. Estoque dos produtos reabastecido')
       const responseGet2 = await testServer.get(rota.rotaProdutos + '/' + prodId)
+      console.log(responseGet2.body)
       const qtde = responseGet2.body.quantidade
       expect(qtde).toEqual(qtd + 1)
     })
@@ -48,6 +52,7 @@ describe('DELETE /carrinhos/cancelar-compra', () => {
   })
 
   afterEach(() => {
-    prod.deletarProduto(prodId)
+    cart.deletarCarrinho(authorization)
+    prod.removerTodosProdutos(authorization)
   })
 })

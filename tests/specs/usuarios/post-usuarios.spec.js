@@ -1,8 +1,10 @@
 const user = require('../../dataFactory/userData')
 const testServer = require('../../utils/testServer')
 const rota = require('../../utils/rotas')
+const dao = require('../utils/DAO')
 
 let usuario
+let response
 
 describe('POST /usuarios', () => {
   beforeEach(() => {
@@ -22,6 +24,10 @@ describe('POST /usuarios', () => {
       const response = await testServer.post(rota.rotaUsuarios)
         .send(usuario)
       expect(response.status).toBe(201)
+    })
+
+    beforeEach(() => {
+      dao.deleteUser()
     })
   })
 

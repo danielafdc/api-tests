@@ -24,7 +24,6 @@ module.exports = {
   criarUsuario: async (usuario) => {
     const responseUser = await testServer.post(rota.rotaUsuarios)
       .send(usuario)
-
     return responseUser
   }
 }

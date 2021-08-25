@@ -11,5 +11,9 @@ module.exports = {
     })
       .set('Authorization', authorization)
     return carrinho
+  },
+
+  deletarCarrinho: async (authorization) => {
+    await testServer.delete(rota.rotaCancelarCompra).set('Authorization', authorization)
   }
 }

@@ -6,10 +6,11 @@ const rota = require('../../utils/rotas')
 
 let cartId
 let prodId
+let authorization
 
 describe('GET /carrinhos', () => {
   beforeEach(async () => {
-    const authorization = await auth.login()
+    authorization = await auth.login()
     const produto = await prod.criarProduto(authorization)
     prodId = produto.body._id
     const { body } = await cart.criarCarrinho(authorization, prodId)
@@ -44,6 +45,7 @@ describe('GET /carrinhos', () => {
   })
 
   afterEach(() => {
-    prod.deletarProduto(prodId)
+    cart.deletarCarrinho(authorization)
+    prod.removerTodosProdutos(authorization)
   })
 })

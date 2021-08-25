@@ -8,9 +8,7 @@ let userId
 describe('DELETE /usuarios', () => {
   beforeEach(async () => {
     usuario = user.dadosDoUsuarioComum()
-
     const responseUser = await user.criarUsuario(usuario)
-
     userId = await responseUser.body._id
   })
   describe('Excluir um usuário através da rota DELETE com sucesso', () => {

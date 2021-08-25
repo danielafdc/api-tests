@@ -37,6 +37,7 @@ describe('DELETE /carrinhos/concluir-compra', () => {
   })
 
   afterEach(() => {
-    prod.deletarProduto(prodId)
+    cart.deletarCarrinho(authorization)
+    prod.removerTodosProdutos(authorization)
   })
 })

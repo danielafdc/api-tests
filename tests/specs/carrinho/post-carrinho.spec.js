@@ -17,6 +17,7 @@ describe('POST /carrinhos', () => {
     it('Cadastrar um carrinho com sucesso', async () => {
       const response = await cart.criarCarrinho(authorization, prodId)
       const cartId = response.body._id
+      console.log(response.body)
       expect(response.status).toBe(201)
       expect(response.body).toHaveProperty('message', 'Cadastro realizado com sucesso')
       expect(response.body).toHaveProperty('_id', cartId)
@@ -44,6 +45,7 @@ describe('POST /carrinhos', () => {
     it('Criar dois carrinhos para o mesmo usuário deve falhar', async () => {
       await cart.criarCarrinho(authorization, prodId)
       const response2 = await cart.criarCarrinho(authorization, prodId)
+      console.log(response2.body)
       expect(response2.status).toBe(400)
       expect(response2.body).toHaveProperty('message', 'Não é permitido ter mais de 1 carrinho')
     })
@@ -72,7 +74,8 @@ describe('POST /carrinhos', () => {
     })
   })
 
-    afterEach(() => {
-      prod.deletarProduto(prodId)
-    })
+  afterEach(() => {
+    cart.deletarCarrinho(authorization)
+    prod.removerTodosProdutos(authorization)
+  })
 })
