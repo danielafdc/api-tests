@@ -27,7 +27,6 @@ describe('POST /usuarios', () => {
     })
 
     afterEach(() => {
-      console.log(response.body)
       userId = response.body._id
       dao.deleteUser(userId)
     })

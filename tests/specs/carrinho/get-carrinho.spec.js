@@ -38,6 +38,7 @@ describe('GET /carrinhos', () => {
 
     afterEach(() => {
       dao.clearAllCartsFromDBButMockData(authorization)
+      dao.clearAllProductsFromDBButMockData(authorization)
     })
   })
 

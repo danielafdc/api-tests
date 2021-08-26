@@ -39,5 +39,6 @@ describe('DELETE /carrinhos/concluir-compra', () => {
 
   afterEach(() => {
     dao.clearAllCartsFromDBButMockData(authorization)
+    dao.clearAllProductsFromDBButMockData(authorization)
   })
 })

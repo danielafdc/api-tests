@@ -18,7 +18,6 @@ describe('POST /carrinhos', () => {
     it('Cadastrar um carrinho com sucesso', async () => {
       const response = await cart.criarCarrinho(authorization, prodId)
       const cartId = response.body._id
-      console.log(response.body)
       expect(response.status).toBe(201)
       expect(response.body).toHaveProperty('message', 'Cadastro realizado com sucesso')
       expect(response.body).toHaveProperty('_id', cartId)
@@ -77,5 +76,6 @@ describe('POST /carrinhos', () => {
 
   afterEach(() => {
     dao.clearAllCartsFromDBButMockData(authorization)
+    dao.clearAllProductsFromDBButMockData(authorization)
   })
 })

@@ -45,7 +45,6 @@ describe('PUT /usuarios', () => {
   })
 
   afterEach(() => {
-      console.log("Deletando" + userId)
       dao.deleteUser(userId)
     })
 })
