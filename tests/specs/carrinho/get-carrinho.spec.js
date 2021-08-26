@@ -3,20 +3,21 @@ const prod = require('../../dataFactory/productData')
 const cart = require('../../dataFactory/cartData')
 const testServer = require('../../utils/testServer')
 const rota = require('../../utils/rotas')
+const dao = require('../../utils/DAO')
 
 let cartId
 let prodId
 let authorization
 
 describe('GET /carrinhos', () => {
-  beforeEach(async () => {
-    authorization = await auth.login()
-    const produto = await prod.criarProduto(authorization)
-    prodId = produto.body._id
-    const { body } = await cart.criarCarrinho(authorization, prodId)
-    cartId = body._id
-  })
-  describe('Listar carrinhos cadastrados através da rota GET com sucesso', () => {
+    describe('Listar carrinhos cadastrados através da rota GET com sucesso', () => {
+      beforeEach(async () => {
+        authorization = await auth.login()
+        const produto = await prod.criarProduto(authorization)
+        prodId = produto.body._id
+        const { body } = await cart.criarCarrinho(authorization, prodId)
+        cartId = body._id
+      })
     it('Listar um carrinho pelo id com sucesso', async () => {
       const response = await testServer.get(rota.rotaCarrinhos + '/' + cartId)
       expect(response.status).toBe(200)
@@ -34,6 +35,10 @@ describe('GET /carrinhos', () => {
         ])
       )
     })
+
+    afterEach(() => {
+      dao.clearAllCartsFromDBButMockData(authorization)
+    })
   })
 
   describe('Encontrar um carrinho através da rota GET sem sucesso', () => {
@@ -42,10 +47,5 @@ describe('GET /carrinhos', () => {
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'Carrinho não encontrado')
     })
-  })
-
-  afterEach(() => {
-    cart.deletarCarrinho(authorization)
-    prod.removerTodosProdutos(authorization)
   })
 })

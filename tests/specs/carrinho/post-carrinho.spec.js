@@ -3,6 +3,7 @@ const prod = require('../../dataFactory/productData')
 const cart = require('../../dataFactory/cartData')
 const testServer = require('../../utils/testServer')
 const rota = require('../../utils/rotas')
+const dao = require('../../utils/DAO')
 
 let prodId
 let authorization
@@ -75,7 +76,6 @@ describe('POST /carrinhos', () => {
   })
 
   afterEach(() => {
-    cart.deletarCarrinho(authorization)
-    prod.removerTodosProdutos(authorization)
+    dao.clearAllCartsFromDBButMockData(authorization)
   })
 })

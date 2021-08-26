@@ -15,19 +15,6 @@ module.exports = {
   criarProduto: async (authorization) => {
     const dadosProduto = module.exports.dadosDoProduto()
     const produto = await testServer.post(rota.rotaProdutos).send(dadosProduto).set('Authorization', authorization)
-    console.log(dadosProduto)
     return produto
-  },
-
-  removerTodosProdutos: async (authorization) => {
-    const listaProdutos = await testServer.get(rota.rotaProdutos).set('Authorization', authorization)
-    const body = listaProdutos.body.produtos
-    const listaIds = body.map(function(item){
-    return item._id;
-    })
-    
-    listaIds.forEach(async function(id, i) {
-      await testServer.delete(rota.rotaProdutos + '/' + id).set('Authorization', authorization)
-    })
   }
 }
