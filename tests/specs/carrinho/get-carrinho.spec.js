@@ -10,14 +10,14 @@ let prodId
 let user
 
 describe('GET /carrinhos', () => {
-    describe('Listar carrinhos cadastrados através da rota GET com sucesso', () => {
-      beforeEach(async () => {
-        user = await auth.login()
-        const produto = await prod.criarProduto(user.authorization)
-        prodId = produto.body._id
-        const { body } = await cart.criarCarrinho(user.authorization, prodId)
-        cartId = body._id
-      })
+  describe('Listar carrinhos cadastrados através da rota GET com sucesso', () => {
+    beforeEach(async () => {
+      user = await auth.login()
+      const produto = await prod.criarProduto(user.authorization)
+      prodId = produto.body._id
+      const { body } = await cart.criarCarrinho(user.authorization, prodId)
+      cartId = body._id
+    })
     it('Listar um carrinho pelo id com sucesso', async () => {
       const response = await testServer.get(rota.rotaCarrinhos + '/' + cartId)
       expect(response.status).toBe(200)

@@ -45,6 +45,6 @@ describe('PUT /usuarios', () => {
   })
 
   afterEach(() => {
-      dao.clearAllUsersFromDBButMockData(userId)
-    })
+    dao.clearAllUsersFromDBButMockData(userId)
+  })
 })

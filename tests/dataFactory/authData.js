@@ -3,7 +3,7 @@ const rota = require('../utils/rotas')
 const user = require('./userData')
 
 module.exports = {
-  
+
   login: async () => {
     const usuario = user.dadosDoUsuarioAdmin()
     const responseCriarUsuario = await user.criarUsuario(usuario)
@@ -13,10 +13,10 @@ module.exports = {
     }
     const { body } = await testServer.post(rota.rotaLogin)
       .send(dadosLogin)
-      const userData = {
-        id: responseCriarUsuario.body._id,
-        authorization: body.authorization
-      }
+    const userData = {
+      id: responseCriarUsuario.body._id,
+      authorization: body.authorization
+    }
     return userData
   }
 }

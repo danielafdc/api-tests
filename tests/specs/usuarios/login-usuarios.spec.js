@@ -12,10 +12,10 @@ describe('POST /login', () => {
 
     beforeEach(async () => {
       usuario = user.dadosDoUsuarioComum()
-  
+
       await user.criarUsuario(usuario)
     })
-    
+
     it('Realizar login com email e senha', async () => {
       dadosLogin = {
         email: usuario.email,
@@ -51,7 +51,7 @@ describe('POST /login', () => {
         email: 'fulano@qa.com',
         password: ''
       }
-     const response = await testServer.post(rota.rotaLogin).send(dadosLogin)
+      const response = await testServer.post(rota.rotaLogin).send(dadosLogin)
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('password', 'password não pode ficar em branco')
     })
