@@ -27,15 +27,17 @@ describe('POST /usuarios', () => {
     })
 
     afterEach(() => {
-      userId = response.body._id
-      dao.deleteUser(userId)
+      const user = {
+        id: response.body._id
+      }
+      dao.clearAllUsersFromDBButMockData(user)
     })
   })
 
   describe('Criar usuário através da rota POST sem sucesso', () => {
     it('Tentar cadastrar um usuário com email já existente deve falhar', async () => {
       usuario.email = 'fulano@qa.com'
-      response = await testServer.post(rota.rotaUsuarios)
+     response = await testServer.post(rota.rotaUsuarios)
         .send(usuario)
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'Este email já está sendo usado')

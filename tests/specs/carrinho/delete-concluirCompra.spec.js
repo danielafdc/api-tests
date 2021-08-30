@@ -5,19 +5,19 @@ const testServer = require('../../utils/testServer')
 const rota = require('../../utils/rotas')
 const dao = require('../../utils/DAO')
 
-let authorization
+let user
 let prodId
 
 describe('DELETE /carrinhos/concluir-compra', () => {
   beforeAll(async () => {
-    authorization = await auth.login()
-    const produto = await prod.criarProduto(authorization)
+    user = await auth.login()
+    const produto = await prod.criarProduto(user.authorization)
     prodId = produto.body._id
-    await cart.criarCarrinho(authorization, prodId)
+    await cart.criarCarrinho(user.authorization, prodId)
   })
   describe('Concluir compra através da rota DELETE com sucesso', () => {
     it('Concluir uma compra com sucesso', async () => {
-      const response = await testServer.delete(rota.rotaConcluirCompra).set('Authorization', authorization)
+      const response = await testServer.delete(rota.rotaConcluirCompra).set('Authorization', user.authorization)
       expect(response.status).toBe(200)
       expect(response.body).toHaveProperty('message', 'Registro excluído com sucesso')
     })
@@ -38,7 +38,8 @@ describe('DELETE /carrinhos/concluir-compra', () => {
   })
 
   afterEach(() => {
-    dao.clearAllCartsFromDBButMockData(authorization)
-    dao.clearAllProductsFromDBButMockData(authorization)
+    dao.clearAllCartsFromDBButMockData(user.authorization)
+    dao.clearAllProductsFromDBButMockData(user.authorization)
+    dao.clearAllUsersFromDBButMockData(user)
   })
 })

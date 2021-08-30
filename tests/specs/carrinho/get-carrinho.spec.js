@@ -7,15 +7,15 @@ const dao = require('../../utils/DAO')
 
 let cartId
 let prodId
-let authorization
+let user
 
 describe('GET /carrinhos', () => {
     describe('Listar carrinhos cadastrados através da rota GET com sucesso', () => {
       beforeEach(async () => {
-        authorization = await auth.login()
-        const produto = await prod.criarProduto(authorization)
+        user = await auth.login()
+        const produto = await prod.criarProduto(user.authorization)
         prodId = produto.body._id
-        const { body } = await cart.criarCarrinho(authorization, prodId)
+        const { body } = await cart.criarCarrinho(user.authorization, prodId)
         cartId = body._id
       })
     it('Listar um carrinho pelo id com sucesso', async () => {
@@ -37,8 +37,9 @@ describe('GET /carrinhos', () => {
     })
 
     afterEach(() => {
-      dao.clearAllCartsFromDBButMockData(authorization)
-      dao.clearAllProductsFromDBButMockData(authorization)
+      dao.clearAllCartsFromDBButMockData(user.authorization)
+      dao.clearAllProductsFromDBButMockData(user.authorization)
+      dao.clearAllUsersFromDBButMockData(user)
     })
   })
 

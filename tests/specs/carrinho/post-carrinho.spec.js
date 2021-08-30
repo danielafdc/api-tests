@@ -6,17 +6,17 @@ const rota = require('../../utils/rotas')
 const dao = require('../../utils/DAO')
 
 let prodId
-let authorization
+let user
 
 describe('POST /carrinhos', () => {
   beforeEach(async () => {
-    authorization = await auth.login()
-    const produto = await prod.criarProduto(authorization)
+    user = await auth.login()
+    const produto = await prod.criarProduto(user.authorization)
     prodId = produto.body._id
   })
   describe('Cadastrar carrinhos através da rota POST com sucesso', () => {
     it('Cadastrar um carrinho com sucesso', async () => {
-      const response = await cart.criarCarrinho(authorization, prodId)
+      const response = await cart.criarCarrinho(user.authorization, prodId)
       const cartId = response.body._id
       expect(response.status).toBe(201)
       expect(response.body).toHaveProperty('message', 'Cadastro realizado com sucesso')
@@ -36,22 +36,21 @@ describe('POST /carrinhos', () => {
           quantidade: 1
         }]
       })
-        .set('Authorization', authorization)
+        .set('Authorization', user.authorization)
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'Não é permitido possuir produto duplicado')
       expect(response.body).toHaveProperty('idProdutosDuplicados', [prodId])
     })
 
     it('Criar dois carrinhos para o mesmo usuário deve falhar', async () => {
-      await cart.criarCarrinho(authorization, prodId)
-      const response2 = await cart.criarCarrinho(authorization, prodId)
-      console.log(response2.body)
+      await cart.criarCarrinho(user.authorization, prodId)
+      const response2 = await cart.criarCarrinho(user.authorization, prodId)
       expect(response2.status).toBe(400)
       expect(response2.body).toHaveProperty('message', 'Não é permitido ter mais de 1 carrinho')
     })
 
     it('Criar carrinho com produto inexistente deve falhar', async () => {
-      const response = await cart.criarCarrinho(authorization, '1234')
+      const response = await cart.criarCarrinho(user.authorization, '1234')
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'Produto não encontrado')
     })
@@ -62,7 +61,7 @@ describe('POST /carrinhos', () => {
           idProduto: prodId,
           quantidade: 100000
         }]
-      }).set('Authorization', authorization)
+      }).set('Authorization', user.authorization)
       expect(response.status).toBe(400)
       expect(response.body).toHaveProperty('message', 'Produto não possui quantidade suficiente')
     })
@@ -75,7 +74,8 @@ describe('POST /carrinhos', () => {
   })
 
   afterEach(() => {
-    dao.clearAllCartsFromDBButMockData(authorization)
-    dao.clearAllProductsFromDBButMockData(authorization)
+    dao.clearAllCartsFromDBButMockData(user.authorization)
+    dao.clearAllProductsFromDBButMockData(user.authorization)
+    dao.clearAllUsersFromDBButMockData(user)
   })
 })

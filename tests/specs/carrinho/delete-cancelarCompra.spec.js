@@ -5,20 +5,20 @@ const testServer = require('../../utils/testServer')
 const rota = require('../../utils/rotas')
 const dao = require('../../utils/DAO')
 
-let authorization
+let user
 let produto
 let prodId
 
 describe('DELETE /carrinhos/cancelar-compra', () => {
   beforeEach(async () => {
-    authorization = await auth.login()
-    produto = await prod.criarProduto(authorization)
+    user = await auth.login()
+    produto = await prod.criarProduto(user.authorization)
     prodId = produto.body._id
-    await cart.criarCarrinho(authorization, prodId)
+    await cart.criarCarrinho(user.authorization, prodId)
   })
   describe('Cancelar compra através da rota DELETE com sucesso', () => {
     it('Cancelar uma compra com sucesso', async () => {
-      const response = await testServer.delete(rota.rotaCancelarCompra).set('Authorization', authorization)
+      const response = await testServer.delete(rota.rotaCancelarCompra).set('Authorization', user.authorization)
       expect(response.status).toBe(200)
       expect(response.body).toHaveProperty('message', 'Registro excluído com sucesso. Estoque dos produtos reabastecido')
     })
@@ -26,7 +26,7 @@ describe('DELETE /carrinhos/cancelar-compra', () => {
     it('Cancelar uma compra com sucesso deve devolver o produto para o estoque', async () => {
       const responseGet = await testServer.get(rota.rotaProdutos + '/' + prodId)
       const qtd = responseGet.body.quantidade
-      const response = await testServer.delete(rota.rotaCancelarCompra).set('Authorization', authorization)
+      const response = await testServer.delete(rota.rotaCancelarCompra).set('Authorization', user.authorization)
       expect(response.status).toBe(200)
       expect(response.body).toHaveProperty('message', 'Registro excluído com sucesso. Estoque dos produtos reabastecido')
       const responseGet2 = await testServer.get(rota.rotaProdutos + '/' + prodId)
@@ -50,7 +50,8 @@ describe('DELETE /carrinhos/cancelar-compra', () => {
   })
 
   afterEach(() => {
-    dao.clearAllCartsFromDBButMockData(authorization)
-    dao.clearAllProductsFromDBButMockData(authorization)
+    dao.clearAllCartsFromDBButMockData(user.authorization)
+    dao.clearAllProductsFromDBButMockData(user.authorization)
+    dao.clearAllUsersFromDBButMockData(user)
   })
 })

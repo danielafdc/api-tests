@@ -1,25 +1,24 @@
 const testServer = require('../utils/testServer')
 const rota = require('../utils/rotas')
+const userMockId = '0uxuPY0cbmQhpEz1'
 
 module.exports = {
       
-    // clearAllUsersFromDB: async (authorization) => {
-    //     const listaUsuarios = await testServer.get(rota.rotaUsuarios)
-    //     const body = listaUsuarioss.body.usuarios
-    //     const listaIds = body.map(function(item){
-    //     return item._id;
-    //     })
+    clearAllUsersFromDBButMockData: async (user) => {
+        const listaUsuarios = await testServer.get(rota.rotaUsuarios)
+        const body = listaUsuarios.body.usuarios
+        const listaIds = body.map(function(item){
+        return item._id;
+        })
         
-    //     listaIds.forEach(async function(id) {
-    //       await testServer.delete(rota.rotaUsuarios + '/' + id)
-    //     })
-    //   },
+        listaIds.forEach(async function(id) {
+            if (id != user.id && id != userMockId) {
+                await testServer.delete(rota.rotaUsuarios + '/' + id)
+            }
+        })
+      },
 
-    deleteUser: async (id) => {
-        await testServer.delete(rota.rotaUsuarios + '/' + id)
-    },
-
-    clearAllProductsFromDBButMockData: async (authorization) => {
+     clearAllProductsFromDBButMockData: async (authorization) => {
       const listaProdutos = await testServer.get(rota.rotaProdutos).set('Authorization', authorization)
       const body = listaProdutos.body.produtos
       const listaIds = body.map(function(item){

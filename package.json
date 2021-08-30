@@ -43,5 +43,6 @@
     "*.{js,jsx}": [
       "npm run lint:fix"
     ]
-  }
+  },
+  "dependencies": {}
 }
