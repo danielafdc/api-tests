@@ -1,19 +1,17 @@
-const user = require('../utils/userData')
-const testServer = require('../utils/testServer')
-const rota = require('../utils/rotas')
+const user = require('../../dataFactory/userData')
+const testServer = require('../../utils/testServer')
+const rota = require('../../utils/rotas')
 
 let usuario
 let userId
 
 describe('DELETE /usuarios', () => {
-  beforeEach(async () => {
-    usuario = user.dadosDoUsuario()
-
-    const responseUser = await user.criarUsuario(usuario)
-
-    userId = await responseUser.body._id
-  })
   describe('Excluir um usuário através da rota DELETE com sucesso', () => {
+    beforeEach(async () => {
+      usuario = user.dadosDoUsuarioComum()
+      const responseUser = await user.criarUsuario(usuario)
+      userId = await responseUser.body._id
+    })
     it('Excluir um usuário com sucesso pelo id', async () => {
       const response = await testServer.delete(rota.rotaUsuarios + '/' + userId)
       expect(response.status).toBe(200)
